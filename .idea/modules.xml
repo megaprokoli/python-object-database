@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/../gamer_match/.idea/gamer_match.iml" filepath="$PROJECT_DIR$/../gamer_match/.idea/gamer_match.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/python_object_database.iml" filepath="$PROJECT_DIR$/.idea/python_object_database.iml" />
+    </modules>
+  </component>
+</project>
