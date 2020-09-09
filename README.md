@@ -1,8 +1,12 @@
 # Python-Object-Database
-Python-Object-Database is a simple database that can store python objects.
+Python-Object-Database is a simple database that can store python objects.<br>
 
+**Disclaimer:** This is a students project and may or may not be useful. Feedback is welcome.
 ## Basic usage
 ### Creating a new database
+To create a database you need to create a database object and provide it a 
+directory to place the database files in and a name. After that you can run the
+create method.
 ```python
 from PyObjDB.python_object_database import PyObjDatabase
 
