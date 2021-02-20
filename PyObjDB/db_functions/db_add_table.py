@@ -8,9 +8,9 @@ class DBAddTable(DatabaseFunction):
         super().__init__(obj_db)
         self._table_name = None
 
-    def call(self, table_name):
+    def call(self, table_name, no_duplicates):
         if table_name not in self._obj_db.tables.keys():
-            self._obj_db.tables.update({table_name: Table(table_name)})
+            self._obj_db.tables.update({table_name: Table(table_name, no_duplicates=no_duplicates)})
             self._table_name = table_name
         else:
             raise exceptions.TableAlreadyExists("The table '{}' already exists!".format(table_name))

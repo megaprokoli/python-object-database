@@ -12,3 +12,7 @@ class TableAlreadyExists(ValueError):
 
 class EntryExists(ValueError):
     pass
+
+
+class DuplicateException(ValueError):
+    pass

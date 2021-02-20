@@ -48,6 +48,7 @@ db.delete_table(table_name="table1")
 db.commit()
 ```
 ### Adding and deleting elements
+**Note:** you can't store duplicate objects. They will be overwritten.
 ```python
 from PyObjDB.python_object_database import PyObjDatabase
 
@@ -105,6 +106,15 @@ elems = db.get(table_name="table1", row_id="77667533ff2d4961a8ad3b35d7d8801f")
 
 # Getting elements by filter
 elems = db.get(table_name="table1", filter_func=lambda o: len(o) == 3)
+```
+### Object existence
+```python
+from PyObjDB.python_object_database import PyObjDatabase
+
+db = PyObjDatabase(db_dir="db", name="obj_db")
+
+if db.obj_exists("table1", some_obj):
+    do_something()
 ```
 ### Encryption
 You can encrypt your database by providing a key to the database object.<br>

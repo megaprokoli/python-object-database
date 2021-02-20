@@ -17,10 +17,11 @@ from PyObjDB.db_functions.db_clear_table import DBClearTable
 
 
 class PyObjDatabase:
-    def __init__(self, db_dir, name, crypt_key=None):
+    def __init__(self, db_dir, name, crypt_key=None, no_duplicates=False):
         self.db_dir = db_dir
         self.name = name
         self.crypt_key = crypt_key
+        self.no_duplicates = no_duplicates
 
         self.tables = {}
         self.commit_queue = []
@@ -77,6 +78,18 @@ class PyObjDatabase:
 
         func.call(*args, **kwargs)
 
+    def obj_exists(self, table_name: str, obj) -> bool:
+        """
+        Returns true if the given obj exists in the given table
+        :param table_name:
+        :param obj:
+        :return:
+        """
+        try:
+            return self.tables[table_name].obj_exists(obj)
+        except KeyError:
+            raise exceptions.TableDoesNotExist("The table '{}' does not exist yet!".format(table_name))
+
     def commit(self) -> None:
         """
         Commit the changes made and write them to disc.
@@ -123,7 +136,7 @@ class PyObjDatabase:
             raise exceptions.TableDoesNotExist("The table '{}' does not exist yet!".format(table_name))
 
     def add_table(self, table_name):
-        self.__call_db_function(DBAddTable, table_name)
+        self.__call_db_function(DBAddTable, table_name, self.no_duplicates)
 
     def delete_table(self, table_name):
         self.__call_db_function(DBDeleteTable, table_name)

@@ -28,3 +28,5 @@ start = time.time()
 
 print(db.get("test", filter_func=lambda o: len(o) > 3))
 print("Get in", time.time() - start)
+
+# NOTE: the printed result is probably shorter than the loop might indicate because PyObjDB doesn't allow duplicates!

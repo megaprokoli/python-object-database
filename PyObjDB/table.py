@@ -1,13 +1,15 @@
 import json
 import uuid
+import hashlib
 
 from PyObjDB.helpers import serialization
 from PyObjDB import exceptions
 
 
-class Table:
-    def __init__(self, name, content=None):
+class Table:    # TODO maybe also use hash for remove etc.
+    def __init__(self, name, content=None, no_duplicates=False):
         self.name = name
+        self.no_duplicates = no_duplicates
 
         if content:
             self.content = content
@@ -29,6 +31,22 @@ class Table:
             return True
         return type(obj) == self.type
 
+    def obj_exists(self, obj):
+        """
+        Returns true if the given obj exists in this table
+        :param obj:
+        :return:
+        """
+        ser_obj = serialization.serialize(obj)
+        row_id = hashlib.md5(ser_obj.encode('utf-8')).hexdigest()
+
+        try:
+            self.content[row_id]
+        except KeyError:
+            return False
+        else:
+            return True
+
     def serialize(self) -> str:
         """
         Convert table content to JSON string
@@ -46,8 +64,16 @@ class Table:
             raise exceptions.ObjectMismatch("The object type does not match other objects in table '{}'!"
                                             .format(self.name))
 
-        row_id = str(uuid.uuid4().hex)
-        self.content.update({row_id: serialization.serialize(obj)})
+        ser_obj = serialization.serialize(obj)
+
+        if self.no_duplicates and self.obj_exists(obj):
+            raise exceptions.DuplicateException("The given object already exists in table '{}'"
+                                                " if don't want to get exceptions set "
+                                                "self.no_duplicates to false "
+                                                "Note: duplicates are not possible".format(self.name))
+
+        row_id = hashlib.md5(ser_obj.encode('utf-8')).hexdigest()  # str(uuid.uuid4().hex)
+        self.content.update({row_id: ser_obj})
 
         if not self.type:
             self.__set_type(obj)
@@ -129,12 +155,11 @@ class Table:
 
 
 if __name__ == "__main__":
-    table = Table("test")
+    table = Table("test", no_duplicates=False)
 
     table.add([1, 2, 3])
     table.add([1, 2, 3])
     table.add([1, 2])
 
     print(table.get())
-    table.delete(filter_func=lambda o: len(o) == 3)
-    print(table.get())
+    print(table.obj_exists([1, 2, 3, 4]))
