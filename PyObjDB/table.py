@@ -4,6 +4,7 @@ import hashlib
 
 from PyObjDB.helpers import serialization
 from PyObjDB import exceptions
+from PyObjDB.db_entry import DBEntry
 
 
 class Table:    # TODO maybe also use hash for remove etc.
@@ -18,6 +19,16 @@ class Table:    # TODO maybe also use hash for remove etc.
         self.type = None
 
         self.__set_type()
+
+    def __wrap_result(self, result: dict):
+        if len(result) == 1:
+            return DBEntry(list(result.keys())[0], list(result.values())[0])
+        else:
+            entries = []
+
+            for key, value in result.items():
+                entries.append(DBEntry(key, value))
+            return entries
 
     def __set_type(self, obj=None):
         if obj:
@@ -113,7 +124,7 @@ class Table:    # TODO maybe also use hash for remove etc.
                 else:
                     decoded.update({obj_key: dec})
 
-        return decoded
+        return self.__wrap_result(decoded)
 
     def delete(self, key=None, filter_func=None) -> None:
         """

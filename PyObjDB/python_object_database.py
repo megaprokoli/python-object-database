@@ -128,7 +128,7 @@ class PyObjDatabase:
         :param table_name:
         :param row_id: row_id
         :param filter_func: function to filter entries
-        :return:
+        :return: an DBEntry object when searched by ID or a list of DBEntry objects when using a filter function
         """
         try:
             return self.tables[table_name].get(row_id, filter_func)

@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='PyObjDB',
-    version='0.0.2',
+    version='0.0.3',
     packages=['PyObjDB', 'PyObjDB.helpers', 'PyObjDB.db_functions'],
     install_requires=["dill", "cryptography"],
     url='https://github.com/megaprokoli/python-object-database',

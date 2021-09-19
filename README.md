@@ -1,5 +1,6 @@
 # Python-Object-Database
-Python-Object-Database is a simple database that can store python objects.<br>
+Python-Object-Database is a simple database that can store python objects.
+This is meant to be used as local database for small data sets<br>
 
 **Disclaimer:** This is a students project and may or may not be useful. Feedback is welcome.
 ## Basic usage
